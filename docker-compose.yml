@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  ruby:
+    image: ruby:2.7.2-buster
+    volumes:
+      - .:/usr/src/app
+    entrypoint: "tail -f /dev/null"
+    working_dir: /usr/src/app
