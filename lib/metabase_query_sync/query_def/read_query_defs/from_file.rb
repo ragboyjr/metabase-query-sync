@@ -8,8 +8,8 @@ class MetabaseQuerySync::QueryDef::ReadQueryDefs
     end
 
     def call()
-      Dir[File.join(path, "**/*.yaml")].map do |f|
-        QueryDef.from_h(Yaml.load_file(f))
+      Dir[File.join(@path, "**/*.yaml")].map do |f|
+        QueryDef.from_h(YAML.load_file(f))
       end
     end
   end

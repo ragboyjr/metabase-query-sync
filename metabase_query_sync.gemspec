@@ -5,6 +5,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "zeitwerk", '~> 2.4.2'
   spec.add_dependency "metabase", '~> 0.5.0'
   spec.add_dependency "dry-schema", '~> 1.5.0'
+  spec.add_dependency "dry-struct", '~> 1.0.0'
 
   spec.required_ruby_version = "~> 2.7.0"
 
