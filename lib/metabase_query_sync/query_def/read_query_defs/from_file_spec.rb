@@ -24,12 +24,13 @@ RSpec.describe QueryDef::ReadQueryDefs::FromFile do
     given_a_file_with_contents 'file.yaml', <<-'YAML'
 ---
 name: 'Test Health Check'
+database: 'Local'
 sql: |
   SELECT IF(COUNT(*) < 500, 'Low Volume Detected', null) FROM orders WHERE created_at > NOW() - INTERVAL 4 HOUR
 YAML
     when_query_defs_are_imported
     then_the_imported_query_defs_match [
-      QueryDef.new(name: "Test Health Check", sql: "SELECT IF(COUNT(*) < 500, 'Low Volume Detected', null) FROM orders WHERE created_at > NOW() - INTERVAL 4 HOUR\n")
+      QueryDef.new(name: "Test Health Check", sql: "SELECT IF(COUNT(*) < 500, 'Low Volume Detected', null) FROM orders WHERE created_at > NOW() - INTERVAL 4 HOUR\n", database: "Local")
     ]
   end
 end

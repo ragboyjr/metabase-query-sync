@@ -2,8 +2,16 @@ version: '3.7'
 
 services:
   ruby:
-    image: ruby:2.7.2-buster
+    build: ./docker/ruby
     volumes:
       - .:/usr/src/app
     entrypoint: "tail -f /dev/null"
     working_dir: /usr/src/app
+  metabase:
+    build: ./docker/metabase
+    environment:
+      MB_DB_FILE: /metabase-data/metabase.db
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./docker/metabase/local.sqlite:/metabase-data/local.sqlite:delegated

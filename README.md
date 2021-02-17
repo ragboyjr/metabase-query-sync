@@ -29,6 +29,12 @@ TODO: Write usage instructions here
 - Install gems with `bundle install`
 - Run tests with `bundle exec rspec`
 
+## Debugging with Metabase
+
+To setup the local data source for metabase, run `make db`.
+
+Starting the metabase docker container should automatically initialize an empty metabase installation with the main admin user account (ragboyjr@icloud.com / password123).
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/ragboyjr/metabase-query-sync. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/ragboyjr/metabase-query-sync/blob/master/CODE_OF_CONDUCT.md).

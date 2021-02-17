@@ -1,24 +1,18 @@
-require 'dry/schema'
+require 'dry-schema'
+require 'dry-struct'
 
-class MetabaseQuerySync::QueryDef
-  attr_reader :name, :sql, :alerts
+class MetabaseQuerySync::QueryDef < Dry::Struct
+  class Alert < Dry::Struct
+    class Frequency < Dry::Struct
+      class Daily < Frequency
+        attribute :hour, MetabaseQuerySync::Types::Strict::Integer
 
-  class Alert
-    attr_reader :frequency
-
-    class Frequency
-      class Daily < Frequency;
-        attr_reader :hour
-        def initialize(hour)
-          raise 'expected int between 0 and 23' unless (0..23) === hour
-          @hour = hour
+        def initialize(hour:)
+          raise "Hour #{hour} must be within 0 and 23" unless (0..23) === hour
+          super(hour: hour)
         end
 
-        def ==(o)
-          o.is_a?(Daily) && hour == o.hour
-        end
-
-        def self.schema
+        def self.create_schema
           Dry::Schema.JSON do
             required(:type).value(:string, eql?: 'daily')
             required(:hour).filled(:integer)
@@ -26,19 +20,15 @@ class MetabaseQuerySync::QueryDef
         end
 
         def self.from_validated_hash(h)
-          new(h['hour'])
+          new(hour: h["hour"])
         end
       end
 
       class Hourly < Frequency
-        def self.schema
+        def self.create_schema
           Dry::Schema.JSON do
             required(:type).value(:string, eql?: 'hourly')
           end
-        end
-
-        def ==(o)
-          o.is_a?(Hourly)
         end
 
         def self.from_validated_hash(h)
@@ -46,8 +36,8 @@ class MetabaseQuerySync::QueryDef
         end
       end
 
-      def self.schema
-        Daily.schema | Hourly.schema
+      def self.create_schema
+        Daily.create_schema | Hourly.create_schema
       end
 
       # @return [Frequency]
@@ -61,71 +51,47 @@ class MetabaseQuerySync::QueryDef
       end
     end
 
-    # @param [Alert::Frequency] frequency
-    def initialize(frequency)
-      @frequency = frequency
-    end
-
     class Slack < self
-      attr_reader :channel
-      # @param frequency [Frequency]
-      # @param channel [String]
-      def initialize(frequency, channel)
-        super(frequency)
-        @channel = channel
-      end
+      attribute :channel, MetabaseQuerySync::Types::Strict::String
 
-      def ==(o)
-        o.is_a?(Slack) && frequency == o.frequency && channel == o.channel
-      end
-
-      def self.schema
+      def self.create_schema
         Dry::Schema.JSON do
           required(:type).value(:string, eql?: 'slack')
-          required(:frequency).hash(Frequency.schema)
+          required(:frequency).hash(Frequency.create_schema)
           required(:channel).filled(:string)
         end
       end
 
       def self.from_validated_hash(h)
-        new(Frequency.from_validated_hash(h["frequency"]), h["channel"])
+        new(frequency: Frequency.from_validated_hash(h["frequency"]), channel: h["channel"])
       end
     end
 
     class Email < self
-      attr_reader :recipients
-
-      class Recipient
+      class Recipient < Dry::Struct
         class EmailAddress < self
-          attr_reader :email
-          # @param email [String]
-          def initialize(email)
-            @email = email
-          end
+          attribute :email, MetabaseQuerySync::Types::Strict::String
 
-          def self.schema
+          def self.create_schema
             Dry::Schema.JSON do
               required(:type).value(:string, eql?: 'email_address')
               required(:email).filled(:string)
             end
           end
 
-          def ==(o)
-            o.is_a?(EmailAddress) && email == o.email
-          end
-
           def self.from_validated_hash(h)
-            return new(h["email"])
+            return new(email: h["email"])
           end
         end
+
         class User < self
           def initialize()
             raise %q{Not implemented yet, eventually we'll be able to support user account recipients.}
           end
         end
 
-        def self.schema
-          EmailAddress.schema
+        def self.create_schema
+          EmailAddress.create_schema
         end
 
         def self.from_validated_hash(h)
@@ -138,29 +104,22 @@ class MetabaseQuerySync::QueryDef
         end
       end
 
-      # @param frequency [Frequency]
-      # @param recipients [Array<Recipient>]
-      def initialize(frequency, recipients)
-        super(frequency)
-        @recipients = recipients
-      end
+      attribute :recipients, MetabaseQuerySync::Types::Strict::Array.of(MetabaseQuerySync::Types.Instance(Recipient))
 
-      def ==(o)
-        o.is_a?(Email) && frequency == o.frequency && recipients == o.recipients
-      end
-
-      def self.schema
+      def self.create_schema
         Dry::Schema.JSON do
           required(:type).value(:string, eql?: 'email')
-          required(:frequency).hash(Frequency.schema)
-          required(:recipients).array(:filled?, Recipient.schema)
+          required(:frequency).hash(Frequency.create_schema)
+          required(:recipients).array(:filled?, Recipient.create_schema)
         end
       end
 
       def self.from_validated_hash(h)
-        new(Frequency.from_validated_hash(h["frequency"]), h["recipients"].map { |r| Recipient.from_validated_hash(r) })
+        new(frequency: Frequency.from_validated_hash(h["frequency"]), recipients: h["recipients"].map { |r| Recipient.from_validated_hash(r) })
       end
     end
+
+    attribute :frequency, Frequency
 
     # @param h [Hash]
     # @return [Alert]
@@ -175,21 +134,15 @@ class MetabaseQuerySync::QueryDef
       end
     end
 
-    def self.schema
-      Slack.schema | Email.schema
+    def self.create_schema
+      Slack.create_schema | Email.create_schema
     end
   end
 
-  # @param alerts [Array<Alert>]
-  def initialize(name:, sql:, alerts: [])
-    @name = name
-    @sql = sql
-    @alerts = alerts
-  end
-
-  def ==(o)
-    o.is_a?(QueryDef) && name == o.name && sql == o.sql && alerts == o.alerts
-  end
+  attribute :name, MetabaseQuerySync::Types::Strict::String
+  attribute :sql, MetabaseQuerySync::Types::Strict::String
+  attribute :database, MetabaseQuerySync::Types::Strict::String
+  attribute :alerts, MetabaseQuerySync::Types::Strict::Array.default([].freeze).of(MetabaseQuerySync::Types.Instance(Alert))
 
   # @param h [Hash]
   # @return [QueryDef]
@@ -198,13 +151,15 @@ class MetabaseQuerySync::QueryDef
     result = Dry::Schema.JSON do
       required(:name).filled(:string)
       required(:sql).filled(:string)
-      optional(:alerts).array(:filled?, Alert.schema)
+      required(:database).filled(:string)
+      optional(:alerts).array(:filled?, Alert.create_schema)
     end.(h)
     raise "Invalid hash provided: #{result.errors.to_h}" if result.failure?
 
     new(
       name: h["name"],
       sql: h["sql"],
+      database: h["database"],
       alerts: Array(h["alerts"]).map { |alert| Alert.from_validated_hash(alert) }
     )
   end
