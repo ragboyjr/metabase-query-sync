@@ -1,2 +1,2 @@
-class MetabaseQuerySync::MetabaseApi::PutPulseRequest
+class MetabaseQuerySync::MetabaseApi::PutPulseRequest < Dry::Struct
 end

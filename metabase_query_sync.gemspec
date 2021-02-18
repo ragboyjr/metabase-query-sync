@@ -5,7 +5,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "zeitwerk", '~> 2.4'
   spec.add_dependency "dry-schema", '~> 1.5'
   spec.add_dependency "dry-struct", '~> 1.4'
-  spec.add_dependency "faraday", "~> 0.17"
+  spec.add_dependency "dry-monads", '~> 1.3'
+  spec.add_dependency "faraday", "~> 1.0"
+  spec.add_dependency "faraday_middleware", "~> 1.0"
 
   spec.required_ruby_version = "~> 2.7"
 
