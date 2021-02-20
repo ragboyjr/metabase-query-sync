@@ -3,16 +3,14 @@ require 'dry-schema'
 module MetabaseQuerySync::IR
   class Query < Model
     attribute :name, string
-    attribute :description, string.optional
-    attribute :slug, string
+    attribute :description, string.optional.default(nil)
     attribute :sql, string
     attribute :database, string
     attribute :pulse, string
-    attribute :collection, string.optional
+    attribute :collection, string.optional.default(nil)
 
     validate_with_schema do
       required(:name).filled(:string)
-      required(:slug).filled(:string)
       required(:sql).filled(:string)
       required(:database).filled(:string)
       required(:pulse).filled(:string)

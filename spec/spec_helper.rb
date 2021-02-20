@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "metabase_query_sync"
+require_relative 'ir_factory'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

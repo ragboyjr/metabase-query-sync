@@ -20,15 +20,8 @@ class MetabaseQuerySync::IR::Model < Dry::Struct
     MetabaseQuerySync::Types::Strict::Array
   end
 
-  def self.from_h(h)
-    raise 'not implemented'
-  end
-
-  protected
-
   def self.validate_with_schema(&schema_def)
-    # @type [Dry::Schema::Result]
-    def self.from_h(h)
+    define_singleton_method :from_h do |h|
       result = Dry::Schema.JSON(&schema_def).(h)
       raise "Invalid hash provided: #{result.errors.to_h}" if result.failure?
       new(h)

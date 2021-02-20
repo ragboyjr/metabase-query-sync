@@ -21,7 +21,7 @@ class MetabaseQuerySync::MetabaseApi
         c.request :json, content_type: /\bjson$/
         c.response :json, content_type: /\bjson$/
         c.request :url_encoded, content_type: /x-www-form-urlencoded/
-        c.response :logger
+        # c.response :logger
         c.adapter Faraday.default_adapter
         c.headers['User-Agent'] =
           "MetabaseQuerySync/#{MetabaseQuerySync::VERSION} (#{RUBY_ENGINE}#{RUBY_VERSION})"
@@ -68,6 +68,10 @@ class MetabaseQuerySync::MetabaseApi
       else
         request(:post, "/api/card", body: card_request.to_h)
       end.fmap to(Card)
+    end
+
+    def get_pulse(id)
+      request(:get, "/api/pulse/#{id}").fmap to(Pulse)
     end
 
     def put_pulse(pulse_request)

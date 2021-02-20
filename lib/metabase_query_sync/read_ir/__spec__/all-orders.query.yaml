@@ -1,0 +1,6 @@
+--- 
+name: Low Volume Orders
+database: Local
+pulse: Hourly
+sql: |
+  SELECT IF(COUNT(*) < 500, 'Low Volume Detected', null) FROM orders WHERE created_at > NOW() - INTERVAL 4 HOUR

@@ -1,20 +1,49 @@
 module MetabaseQuerySync::IR
   class Pulse < Model
-    attribute :name, string
-    attribute :queries, array.of(string)
-    attribute :skip_if_empty, bool.default(true)
-    attribute :alerts, array do
-      attribute :type, string.enum('email', 'slack')
-      attribute :email do
+    class Alert < Model
+      TYPES = ['email', 'slack'].freeze
+      class Email < Model
         attribute :emails, array.of(string)
       end
-      attribute :slack do
+      class Slack < Model
         attribute :channel, string
       end
-      attribute :schedule do
-        attribute :type, string.enum('hourly', 'daily', 'weekly')
+      class Schedule < Model
+        TYPES = ['hourly', 'daily', 'weekly'].freeze
+        DAYS = [nil, 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].freeze
+        attribute :type, string.enum(*TYPES)
         attribute :hour, integer.optional.default(nil)
-        attribute :day, string.enum('sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat')
+        attribute :day, string.optional.default(nil).enum(*DAYS)
+      end
+
+      attribute :type, string.enum(*TYPES)
+      attribute :email, Email.optional.default(nil)
+      attribute :slack, Slack.optional.default(nil)
+      attribute :schedule, Schedule
+    end
+
+    attribute :name, string
+    attribute :skip_if_empty, bool.default(true)
+    attribute :alerts, array.of(Alert)
+
+    validate_with_schema do
+      required(:name).filled(:string)
+      optional(:skip_if_empty).value(:bool)
+      required(:alerts).value(:array, min_size?: 1).each do
+        hash do
+          required(:type).value(:filled?, :str?, included_in?: Alert::TYPES)
+          required(:schedule).hash do
+            required(:type).value(:filled?, :str?, included_in?: Alert::Schedule::TYPES)
+            optional(:hour).value(:integer)
+            optional(:day).value(included_in?: Alert::Schedule::DAYS)
+          end
+          optional(:email).hash do
+            required(:emails).value(array[:string], min_size?: 1)
+          end
+          optional(:slack).hash do
+            required(:channel).filled(:string)
+          end
+        end
       end
     end
   end
