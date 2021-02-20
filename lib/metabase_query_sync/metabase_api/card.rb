@@ -14,12 +14,8 @@ class MetabaseQuerySync::MetabaseApi
       end
     end
 
-    attribute :id, MetabaseQuerySync::Types::Strict::Integer
-    attribute :archived, MetabaseQuerySync::Types::Strict::Bool
-    attribute :name, MetabaseQuerySync::Types::Strict::String
-    attribute :description, MetabaseQuerySync::Types::Strict::String.optional
+    has :id, :archived, :name, :description, :collection_id
     attribute :database_id, MetabaseQuerySync::Types::Strict::Integer
-    attribute :collection_id, MetabaseQuerySync::Types::Strict::Integer
     attribute :query_type, MetabaseQuerySync::Types::Strict::String
     attribute :display, MetabaseQuerySync::Types::Strict::String
     attribute :visualization_settings, MetabaseQuerySync::Types::Strict::Hash

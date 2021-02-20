@@ -30,7 +30,6 @@ RSpec.describe MetabaseQuerySync::QueryDef do
       end
     end
 
-
     [
       {},
       {"name" => 1, "sql" => 1}

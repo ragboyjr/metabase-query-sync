@@ -36,7 +36,7 @@ RSpec.describe MetabaseApi::FaradayMetabaseApi do
     end
 
     def self.card(h = {})
-      JSON.parse(%q({"id":2,"archived":false,"name":"Test Card","description":null,"database_id":2,"collection_id":2,"query_type":"native","dataset_query":{"type":"native","native":{"query":"SELECT * FROM orders"},"database":2}})).merge(h)
+      JSON.parse(%q({"id":2,"archived":false,"display":"table","visualization_settings":{},"name":"Test Card","description":null,"database_id":2,"collection_id":2,"query_type":"native","dataset_query":{"type":"native","native":{"query":"SELECT * FROM orders"},"database":2}})).merge(h)
     end
   end
 
@@ -96,6 +96,22 @@ RSpec.describe MetabaseApi::FaradayMetabaseApi do
       stubs.get('/api/card/2') { json_response(Factory.card) }
     end
     when_the_client { |client| client.get_card(2) }
+    then_the_result_is_successful
+  end
+
+  it 'can create a card' do
+    given_the_api_is_setup_with do |stubs|
+      stubs.post('/api/card', %q({"id":null,"name":"Orders","description":null,"display":"table","visualization_settings":{},"collection_id":2,"dataset_query":{"type":"native","native":{"query":"select * from orders"},"database":2}})) { json_response(Factory.card) }
+    end
+    when_the_client { |client| client.put_card(MetabaseApi::PutCardRequest.native(sql: 'select * from orders', database_id: 2, name: 'Orders', collection_id: 2))}
+    then_the_result_is_successful
+  end
+
+  it 'can update a card' do
+    given_the_api_is_setup_with do |stubs|
+      stubs.put('/api/card/2', %q({"id":2,"name":"Orders","description":null,"display":"table","visualization_settings":{},"collection_id":2,"dataset_query":{"type":"native","native":{"query":"select * from orders"},"database":2}})) { json_response(Factory.card) }
+    end
+    when_the_client { |client| client.put_card(MetabaseApi::PutCardRequest.native(id: 2, sql: 'select * from orders', database_id: 2, name: 'Orders', collection_id: 2))}
     then_the_result_is_successful
   end
 end

@@ -70,6 +70,14 @@ class MetabaseQuerySync::MetabaseApi
       end.fmap to(Card)
     end
 
+    def put_pulse(pulse_request)
+      if pulse_request.id
+        request(:put, "/api/pulse/#{pulse_request.id}", body: pulse_request.to_h)
+      else
+        request(:post, "/api/pulse", body: pulse_request.to_h)
+      end.fmap to(Pulse)
+    end
+
     private
 
     def to(klass)
