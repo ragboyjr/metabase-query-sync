@@ -19,3 +19,4 @@ end
 
 QueryDef = MetabaseQuerySync::QueryDef
 MetabaseApi = MetabaseQuerySync::MetabaseApi
+IR = MetabaseQuerySync::IR

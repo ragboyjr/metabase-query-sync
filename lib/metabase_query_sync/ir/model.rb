@@ -30,8 +30,8 @@ class MetabaseQuerySync::IR::Model < Dry::Struct
     # @type [Dry::Schema::Result]
     def self.from_h(h)
       result = Dry::Schema.JSON(&schema_def).(h)
+      raise "Invalid hash provided: #{result.errors.to_h}" if result.failure?
+      new(h)
     end
-    raise "Invalid hash provided: #{result.errors.to_h}" if result.failure?
-    new(h)
   end
 end

@@ -77,7 +77,7 @@ RSpec.describe MetabaseApi::FaradayMetabaseApi do
 
   it 'can create a collection' do
     given_the_api_is_setup_with do |stubs|
-      stubs.post('/api/collection', %q({"id":null,"name":"Test","color":"#509EE3","description":null,"parent_id":null,"archived":false})) { json_response(Factory.collection("name" => "Test")) }
+      stubs.post('/api/collection', %q({"id":null,"name":"Test","description":null,"archived":false,"color":"#509EE3","parent_id":null})) { json_response(Factory.collection("name" => "Test")) }
     end
     when_the_client { |client| client.put_collection(MetabaseApi::PutCollectionRequest.new(name: "Test")) }
     then_the_result_is_successful
@@ -85,7 +85,7 @@ RSpec.describe MetabaseApi::FaradayMetabaseApi do
 
   it 'can update a collection' do
     given_the_api_is_setup_with do |stubs|
-      stubs.put('/api/collection/5', %q({"id":5,"name":"Test","color":"#509EE3","description":null,"parent_id":null,"archived":false})) { json_response(Factory.collection("id" => 5, "name" => "Test")) }
+      stubs.put('/api/collection/5', %q({"id":5,"name":"Test","description":null,"archived":false,"color":"#509EE3","parent_id":null})) { json_response(Factory.collection("id" => 5, "name" => "Test")) }
     end
     when_the_client { |client| client.put_collection(MetabaseApi::PutCollectionRequest.new(id: 5, name: "Test")) }
     then_the_result_is_successful
@@ -101,7 +101,7 @@ RSpec.describe MetabaseApi::FaradayMetabaseApi do
 
   it 'can create a card' do
     given_the_api_is_setup_with do |stubs|
-      stubs.post('/api/card', %q({"id":null,"name":"Orders","description":null,"display":"table","visualization_settings":{},"collection_id":2,"dataset_query":{"type":"native","native":{"query":"select * from orders"},"database":2}})) { json_response(Factory.card) }
+      stubs.post('/api/card', %q({"id":null,"name":"Orders","description":null,"display":"table","visualization_settings":{},"collection_id":2,"archived":false,"dataset_query":{"type":"native","native":{"query":"select * from orders"},"database":2}})) { json_response(Factory.card) }
     end
     when_the_client { |client| client.put_card(MetabaseApi::PutCardRequest.native(sql: 'select * from orders', database_id: 2, name: 'Orders', collection_id: 2))}
     then_the_result_is_successful
@@ -109,7 +109,7 @@ RSpec.describe MetabaseApi::FaradayMetabaseApi do
 
   it 'can update a card' do
     given_the_api_is_setup_with do |stubs|
-      stubs.put('/api/card/2', %q({"id":2,"name":"Orders","description":null,"display":"table","visualization_settings":{},"collection_id":2,"dataset_query":{"type":"native","native":{"query":"select * from orders"},"database":2}})) { json_response(Factory.card) }
+      stubs.put('/api/card/2', %q({"id":2,"name":"Orders","description":null,"display":"table","visualization_settings":{},"collection_id":2,"archived":false,"dataset_query":{"type":"native","native":{"query":"select * from orders"},"database":2}})) { json_response(Factory.card) }
     end
     when_the_client { |client| client.put_card(MetabaseApi::PutCardRequest.native(id: 2, sql: 'select * from orders', database_id: 2, name: 'Orders', collection_id: 2))}
     then_the_result_is_successful
