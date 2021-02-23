@@ -78,11 +78,5 @@ RSpec.describe IR::Graph do
         ])
       }.to raise_error(RuntimeError, 'No pulse (Test Pulse) found for query (Test Query)')
     end
-
-    it "storing extra info doesn't affect equality comparison" do
-      graph_without_extra = graph(queries: [query(name: 'test')])
-      graph_with_extra = graph(queries: [query(name: 'test')]).with_extra([1,2,3])
-      expect(graph_without_extra).to eq(graph_with_extra)
-    end
   end
 end

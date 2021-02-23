@@ -3,8 +3,6 @@ require 'set'
 
 module MetabaseQuerySync::IR
   class Graph < Dry::Struct
-    attr_reader :extra
-
     attribute :collections, MetabaseQuerySync::Types::Strict::Array.of(Collection)
     attribute :pulses, MetabaseQuerySync::Types::Strict::Array.of(Pulse)
     attribute :queries, MetabaseQuerySync::Types::Strict::Array.of(Query)
@@ -12,11 +10,6 @@ module MetabaseQuerySync::IR
     def initialize(attributes)
       super(attributes)
       assert_traversal
-    end
-
-    def with_extra(extra)
-      @extra = extra
-      self
     end
 
     # create a struct from a heterogeneous collection of collection, pulse, or queries

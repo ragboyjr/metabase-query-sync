@@ -14,7 +14,7 @@ class MetabaseQuerySync::MetabaseApi::Model < Dry::Struct
       when :description
         attribute :description, MetabaseQuerySync::Types::Strict::String.optional.default(nil)
       when :collection_id
-        attribute :collection_id, MetabaseQuerySync::Types::Strict::Integer
+        attribute :collection_id, MetabaseQuerySync::Types::Strict::Integer.optional.default(nil)
       else
         raise "Unexpected field for model (#{sym})"
       end

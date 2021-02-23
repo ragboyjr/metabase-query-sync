@@ -1,6 +1,7 @@
 require "bundler/setup"
 require "metabase_query_sync"
 require_relative 'ir_factory'
+require_relative 'metabase_api_factory'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -18,6 +19,5 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
 end
 
-QueryDef = MetabaseQuerySync::QueryDef
 MetabaseApi = MetabaseQuerySync::MetabaseApi
 IR = MetabaseQuerySync::IR
