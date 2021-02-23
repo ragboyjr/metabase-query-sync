@@ -17,7 +17,35 @@ module MetabaseQuerySync
     # @param metabase_api [MetabaseApi]
     # @param root_collection_id [Integer]
     def self.from_metabase_api(metabase_api, root_collection_id)
-      new(collections: [], cards: [], pulses: [], databases: [])
+      items = metabase_api.get_collection_items(root_collection_id)
+      if items.failure?
+        raise "No root collection (id: #{root_collection_id}) found"
+      end
+
+      acc = items.value!
+        .filter { |i| i.card? || i.pulse? }
+        .map do |item|
+          if item.card?
+            metabase_api.get_card(item.id).value!
+          elsif item.pulse?
+            metabase_api.get_pulse(item.id).value!
+          else
+            raise 'Unexpected item type.'
+          end
+        end
+        .reduce({cards: [], pulses: []}) do |acc, item|
+          case item
+          when MetabaseApi::Card
+            acc[:cards] << item
+          when MetabaseApi::Pulse
+            acc[:pulses] << item
+          else
+            raise 'Unexpected item type.'
+          end
+          acc
+        end
+
+      new(collections: [], cards: acc[:cards], pulses: acc[:pulses], databases: metabase_api.get_databases.value!)
     end
 
     def empty?
