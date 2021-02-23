@@ -12,5 +12,9 @@ class MetabaseQuerySync::MetabaseApi
     def self.native(sql:, database_id:, **kwargs)
       new(dataset_query: Card::DatasetQuery.native(sql: sql, database_id: database_id), **kwargs)
     end
+
+    def self.from_card(card)
+      new(card.to_h)
+    end
   end
 end

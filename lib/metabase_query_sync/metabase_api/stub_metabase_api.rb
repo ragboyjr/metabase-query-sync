@@ -32,14 +32,17 @@ class MetabaseQuerySync::MetabaseApi
 
     def put_pulse(pulse_request)
       @requests << pulse_request
+      Success(pulse_request)
     end
 
     def put_collection(collection_request)
       @requests << collection_request
+      Success(collection_request)
     end
 
     def put_card(card_request)
       @requests << card_request
+      Success(card_request)
     end
 
     def get_collection_items(collection_id)

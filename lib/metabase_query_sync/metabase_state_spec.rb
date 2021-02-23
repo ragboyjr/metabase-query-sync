@@ -1,15 +1,5 @@
 RSpec.describe MetabaseQuerySync::MetabaseState do
-  include MetabaseApiFactory
-
-  def given_an_api_with(collections: [], cards: [], pulses: [])
-    @api = MetabaseApi::StubMetabaseApi.new(collections: collections, cards: cards, pulses: pulses, databases: [
-      database(id: 1, name: 'Local')
-    ])
-  end
-
-  def given_an_empty_api
-    given_an_api_with
-  end
+  include MetabaseApiFactory, MetabaseApiSteps
 
   def when_the_state_is_created(root_collection_id)
     @state = described_class.from_metabase_api(@api, root_collection_id)

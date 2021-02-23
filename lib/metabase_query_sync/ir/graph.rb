@@ -2,6 +2,12 @@ require 'dry-struct'
 require 'set'
 
 module MetabaseQuerySync::IR
+  # @!method collections
+  #   @return [Array<Collection>]
+  # @!method queries
+  #   @return [Array<Card>]
+  # @!method pulses
+  #   @return [Array<Pulse>]
   class Graph < Dry::Struct
     attribute :collections, MetabaseQuerySync::Types::Strict::Array.of(Collection)
     attribute :pulses, MetabaseQuerySync::Types::Strict::Array.of(Pulse)

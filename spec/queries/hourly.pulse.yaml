@@ -1,0 +1,7 @@
+name: Hourly
+alerts:
+  - type: email
+    email:
+      emails: ['ragboyjr@icloud.com']
+    schedule:
+      type: hourly

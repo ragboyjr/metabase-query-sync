@@ -8,6 +8,8 @@ module MetabaseQuerySync
   #   @return [Array<MetabaseApi::Card>]
   # @!method pulses
   #   @return [Array<MetabaseApi::Pulse>]
+  # @!method databases
+  #   @return [Array<MetabaseApi::Database>]
   class MetabaseState < Dry::Struct
     attribute :collections, Types::Strict::Array.of(MetabaseApi::Collection)
     attribute :cards, Types::Strict::Array.of(MetabaseApi::Card)
@@ -16,6 +18,7 @@ module MetabaseQuerySync
 
     # @param metabase_api [MetabaseApi]
     # @param root_collection_id [Integer]
+    # @return [MetabaseState]
     def self.from_metabase_api(metabase_api, root_collection_id)
       items = metabase_api.get_collection_items(root_collection_id)
       if items.failure?
@@ -50,6 +53,20 @@ module MetabaseQuerySync
 
     def empty?
       collections.empty? && cards.empty? && pulses.empty?
+    end
+
+    # @return [MetabaseApi::Pulse, nil]
+    def pulse_by_name(name)
+      pulses.filter { |p| p.name.downcase == name.downcase }.first
+    end
+
+    # @return [MetabaseApi::Card, nil]
+    def card_by_name(name)
+      cards.filter { |c| c.name.downcase == name.downcase }.first
+    end
+
+    def database_by_name(name)
+      databases.filter { |d| d.name.downcase == name.downcase }.first
     end
   end
 end
