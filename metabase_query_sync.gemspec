@@ -18,12 +18,9 @@ Gem::Specification.new do |spec|
   spec.email         = ["ragboyjr@icloud.com"]
 
   spec.summary       = 'MetabaseQuerySync is a tool for automatically syncing metabase queries defined in files to a specific metabase installation.'
-  # spec.description   = %q{TODO: Write a longer description or delete this line.}
-  #spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/ragboyjr/metabase-query-sync"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
-
-  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
   #spec.metadata["homepage_uri"] = spec.homepage
   #spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
