@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   # spec.description   = %q{TODO: Write a longer description or delete this line.}
   #spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
 
   spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
 
   # Specify which files should be added to the gem when it is released.
   spec.files         = Dir["README.md", "LICENSE.txt", "lib/**/*.rb"].filter { |f| !f.end_with?('_spec.rb') }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.bindir        = "bin"
+  spec.executables   = ['metabase-query-sync']
   spec.require_paths = ["lib"]
 end
