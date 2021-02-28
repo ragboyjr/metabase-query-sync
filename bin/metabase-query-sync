@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require 'bundler/setup'
 require 'dry/cli'
 require 'metabase_query_sync'
 
