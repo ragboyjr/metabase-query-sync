@@ -70,9 +70,9 @@ Arguments:
 
 Options:
   --[no-]dry-run, -d              	# Perform a dry run and do not actually sync to the metabase instance., default: false
-  --host=VALUE, -h VALUE          	# Metabase Host
-  --user=VALUE, -u VALUE          	# Metabase User
-  --pass=VALUE, -p VALUE          	# Metabase Password
+  --host=VALUE, -H VALUE          	# Metabase Host, if not set, will read from env at METABASE_QUERY_SYNC_HOST
+  --user=VALUE, -u VALUE          	# Metabase User, if not set, will read from env at METABASE_QUERY_SYNC_USER
+  --pass=VALUE, -p VALUE          	# Metabase Password, if not set, will read from env at METABASE_QUERY_SYNC_PASS
   --help, -h                      	# Print this help
 ```
 

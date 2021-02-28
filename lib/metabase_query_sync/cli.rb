@@ -16,9 +16,9 @@ module MetabaseQuerySync
       argument :root_collection_id, type: :integer, required: true, desc: 'The root collection id to sync all items under.'
       argument :path, type: :string, required: true, desc: 'The path to metabase item files to sync from.'
       option :dry_run, type: :boolean, default: false, aliases: ['-d'], desc: 'Perform a dry run and do not actually sync to the metabase instance.'
-      option :host, type: :string, aliases: ['-h'], desc: 'Metabase Host'
-      option :user, type: :string, aliases: ['-u'], desc: 'Metabase User'
-      option :pass, type: :string, aliases: ['-p'], desc: 'Metabase Password'
+      option :host, type: :string, aliases: ['-H'], desc: 'Metabase Host, if not set, will read from env at METABASE_QUERY_SYNC_HOST'
+      option :user, type: :string, aliases: ['-u'], desc: 'Metabase User, if not set, will read from env at METABASE_QUERY_SYNC_USER'
+      option :pass, type: :string, aliases: ['-p'], desc: 'Metabase Password, if not set, will read from env at METABASE_QUERY_SYNC_PASS'
 
       def call(root_collection_id:, path:, dry_run: false, host: nil, user: nil, pass: nil)
         config = MetabaseQuerySync::Config.new(
