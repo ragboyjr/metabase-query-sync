@@ -1,5 +1,5 @@
 module MetabaseApiFactory
-  def card(attributes = {})
+  def card(**attributes)
     MetabaseApi::Card.native({
       id: nil,
       name: 'Test Card',
@@ -8,7 +8,7 @@ module MetabaseApiFactory
     }.merge(attributes))
   end
 
-  def put_card_request(attributes = {})
+  def put_card_request(**attributes)
     MetabaseApi::PutCardRequest.native({
       id: nil,
       name: 'Test Card',
@@ -21,11 +21,11 @@ module MetabaseApiFactory
     MetabaseApi::Database.new(id: id, name: name)
   end
 
-  def item(attributes = {})
+  def item(**attributes)
     MetabaseApi::Item.new(attributes)
   end
 
-  def collection(attributes = {})
+  def collection(**attributes)
     MetabaseApi::Collection.new({
       id: nil,
       name: 'Test Collection',
@@ -35,7 +35,7 @@ module MetabaseApiFactory
     }.merge(attributes))
   end
 
-  def pulse(attributes = {})
+  def pulse(**attributes)
     MetabaseApi::Pulse.new({
       id: nil,
       name: 'Test Pulse',
@@ -45,7 +45,7 @@ module MetabaseApiFactory
     }.merge(attributes))
   end
 
-  def put_pulse_request(attributes = {})
+  def put_pulse_request(**attributes)
     MetabaseApi::PutPulseRequest.new({
       id: nil,
       name: 'Test Pulse',
@@ -55,7 +55,7 @@ module MetabaseApiFactory
     }.merge(attributes))
   end
 
-  def pulse_card(attributes = {})
+  def pulse_card(**attributes)
     MetabaseApi::Pulse::Card.new(attributes)
   end
 
