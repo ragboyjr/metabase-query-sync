@@ -1,3 +1,3 @@
-FROM ruby:2.7.2-buster
+FROM ruby:3.0.0-buster
 
 RUN apt-get update && apt-get install -y sqlite3

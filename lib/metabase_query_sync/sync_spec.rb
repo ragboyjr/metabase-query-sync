@@ -59,14 +59,14 @@ RSpec.describe MetabaseQuerySync::Sync do
   context 'it updates cards when' do
     def given_card_in_api(attributes)
       @api.given_an_api_with(
-        cards: [@api.card({id: 1, name: 'Card 1', sql: 'select 1', collection_id: 1}.merge(attributes))],
+        cards: [@api.card(**{id: 1, name: 'Card 1', sql: 'select 1', collection_id: 1}.merge(attributes))],
         pulses: [@api.pulse(id: 1, name: 'Pulse 1', cards: [@api.pulse_card(id: 1)], collection_id: 1)],
         databases: [@api.database(id: 1, name: 'Local'), @api.database(id: 2, name: 'Local 2')]
       )
     end
     def given_query_in_graph(attributes)
       @ir.given_a_graph(
-        queries: [@ir.query({name: 'Card 1', pulse: 'Pulse 1', sql: 'select 1'}.merge(attributes))],
+        queries: [@ir.query(**{name: 'Card 1', pulse: 'Pulse 1', sql: 'select 1'}.merge(attributes))],
         pulses: [@ir.pulse(name: 'Pulse 1')]
       )
     end
@@ -100,11 +100,11 @@ RSpec.describe MetabaseQuerySync::Sync do
   context 'it updates pulses when' do
     it 'channels change' do
       @api.given_an_api_with(
-        cards: [@api.card({id: 1, name: 'Card 1', sql: 'select 1', collection_id: 1})],
+        cards: [@api.card(id: 1, name: 'Card 1', sql: 'select 1', collection_id: 1)],
         pulses: [@api.pulse(id: 1, name: 'Pulse 1', cards: [@api.pulse_card(id: 1)], channels: [@api.pulse_channel { |c| c.hourly.slack '#test' }], collection_id: 1)],
       )
       @ir.given_a_graph(
-        queries: [@ir.query({name: 'Card 1', pulse: 'Pulse 1', sql: 'select 1'})],
+        queries: [@ir.query(name: 'Card 1', pulse: 'Pulse 1', sql: 'select 1')],
         pulses: [@ir.pulse(name: 'Pulse 1', alerts: [@ir.pulse_alert { |a| a.hourly.slack '#test-new' }])]
       )
       when_a_sync_occurs
@@ -115,15 +115,15 @@ RSpec.describe MetabaseQuerySync::Sync do
     it 'cards change' do
       @api.given_an_api_with(
         cards: [
-          @api.card({id: 1, name: 'Card 1', sql: 'select 1', collection_id: 1}),
-          @api.card({id: 2, name: 'Card 2', sql: 'select 1', collection_id: 1}),
+          @api.card(id: 1, name: 'Card 1', sql: 'select 1', collection_id: 1),
+          @api.card(id: 2, name: 'Card 2', sql: 'select 1', collection_id: 1),
         ],
         pulses: [@api.pulse(id: 1, name: 'Pulse 1', cards: [@api.pulse_card(id: 1)], channels: [@api.pulse_channel { |c| c.hourly.slack '#test' }], collection_id: 1)],
       )
       @ir.given_a_graph(
         queries: [
-          @ir.query({name: 'Card 1', pulse: 'Pulse 1', sql: 'select 1'}),
-          @ir.query({name: 'Card 2', pulse: 'Pulse 1', sql: 'select 1'}),
+          @ir.query(name: 'Card 1', pulse: 'Pulse 1', sql: 'select 1'),
+          @ir.query(name: 'Card 2', pulse: 'Pulse 1', sql: 'select 1'),
         ],
         pulses: [@ir.pulse(name: 'Pulse 1', alerts: [@ir.pulse_alert { |a| a.hourly.slack '#test' }])]
       )

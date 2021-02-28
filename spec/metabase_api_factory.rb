@@ -1,6 +1,6 @@
 module MetabaseApiFactory
   def card(**attributes)
-    MetabaseApi::Card.native({
+    MetabaseApi::Card.native(**{
       id: nil,
       name: 'Test Card',
       database_id: 1,
@@ -9,7 +9,7 @@ module MetabaseApiFactory
   end
 
   def put_card_request(**attributes)
-    MetabaseApi::PutCardRequest.native({
+    MetabaseApi::PutCardRequest.native(**{
       id: nil,
       name: 'Test Card',
       database_id: 1,
