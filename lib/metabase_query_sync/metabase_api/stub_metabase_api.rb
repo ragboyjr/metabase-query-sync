@@ -31,8 +31,7 @@ class MetabaseQuerySync::MetabaseApi
     end
 
     def put_pulse(pulse_request)
-      @requests << pulse_request
-      Success(pulse_request)
+      put_req(Pulse, pulse_request, @pulses) { |pulses| @pulses = pulses }
     end
 
     def put_collection(collection_request)
@@ -41,8 +40,7 @@ class MetabaseQuerySync::MetabaseApi
     end
 
     def put_card(card_request)
-      @requests << card_request
-      Success(card_request)
+      put_req(Card, card_request, @cards) { |cards| @cards = cards }
     end
 
     def get_collection_items(collection_id)
@@ -80,6 +78,19 @@ class MetabaseQuerySync::MetabaseApi
 
     def match_id(id)
       ->(item) { item.id == id }
+    end
+
+    def put_req(klass, req, collection)
+      @requests << req
+      item = klass.from_request(req)
+      if item.id
+        collection = collection.map { |i| i.id == item.id ? item : i }
+      else
+        item = item.new(id: collection.map { |i| i.id }.compact.max.to_i + 1)
+        collection << item
+      end
+      yield collection
+      Success(item)
     end
   end
 end

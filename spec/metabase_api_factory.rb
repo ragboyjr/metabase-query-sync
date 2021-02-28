@@ -40,7 +40,7 @@ module MetabaseApiFactory
       id: nil,
       name: 'Test Pulse',
       cards: [],
-      channels: [],
+      channels: [pulse_channel { |c| c.hourly.emails ['ragboyjr@icloud.com']}],
       skip_if_empty: true,
     }.merge(attributes))
   end
@@ -50,8 +50,16 @@ module MetabaseApiFactory
       id: nil,
       name: 'Test Pulse',
       cards: [],
-      channels: [],
+      channels: [pulse_channel { |c| c.hourly.emails ['ragboyjr@icloud.com']}],
       skip_if_empty: true
     }.merge(attributes))
+  end
+
+  def pulse_card(attributes = {})
+    MetabaseApi::Pulse::Card.new(attributes)
+  end
+
+  def pulse_channel(&block)
+    MetabaseApi::Pulse::Channel.build(&block)
   end
 end

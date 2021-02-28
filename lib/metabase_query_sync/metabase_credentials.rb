@@ -2,6 +2,7 @@ class MetabaseQuerySync::MetabaseCredentials
   attr_reader :host, :user, :pass
 
   def initialize(host:, user:, pass:)
+    raise "Metabase credentials for host, user, pass must not be empty)" if host == nil || user == nil || pass == nil
     @host = host
     @user = user
     @pass = pass

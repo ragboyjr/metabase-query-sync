@@ -10,7 +10,7 @@ module IRFactory
   def pulse(name:, alerts: nil)
     IR::Pulse.new(name: name, alerts: alerts || [
       pulse_alert do |a|
-        a.email ['ragboyjr@icloud.com']
+        a.emails ['ragboyjr@icloud.com']
         a.hourly
       end
     ])
@@ -35,7 +35,7 @@ module IRFactory
       self
     end
 
-    def email(emails)
+    def emails(emails)
       @args = @args.merge({type: 'email', email: {emails: emails}})
       self
     end

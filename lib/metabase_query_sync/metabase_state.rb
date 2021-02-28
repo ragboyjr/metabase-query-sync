@@ -51,6 +51,16 @@ module MetabaseQuerySync
       new(collections: [], cards: acc[:cards], pulses: acc[:pulses], databases: metabase_api.get_databases.value!)
     end
 
+    # @return self
+    def with_card(card)
+      new(cards: cards.concat([card]))
+    end
+
+    # @return self
+    def with_pulse(pulse)
+      new(pulses: pulses.concat([pulse]))
+    end
+
     def empty?
       collections.empty? && cards.empty? && pulses.empty?
     end

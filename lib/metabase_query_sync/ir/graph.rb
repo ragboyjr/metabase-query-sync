@@ -38,12 +38,17 @@ module MetabaseQuerySync::IR
 
     # @return [Query, nil]
     def query_by_name(name)
-      queries.filter { |query| query.name.downcase == name.downcase }.first
+      queries.filter { |query| strcmp(query.name, name) }.first
     end
 
     # @return [Pulse, nil]
     def pulse_by_name(name)
-      pulses.filter { |pulse| pulse.name.downcase == name.downcase }.first
+      pulses.filter { |pulse| strcmp(pulse.name, name) }.first
+    end
+
+    # @return [Array<Query>]
+    def queries_by_pulse(pulse_name)
+      queries.filter { |query| strcmp(query.pulse, pulse_name) }
     end
 
     private
@@ -53,6 +58,12 @@ module MetabaseQuerySync::IR
       queries.each do |q|
         raise "No pulse (#{q.pulse}) found for query (#{q.name})" unless pulse_names === q.pulse.downcase
       end
+    end
+
+    # @param a [String]
+    # @param b [String]
+    def strcmp(a, b)
+      a.downcase == b.downcase
     end
   end
 end

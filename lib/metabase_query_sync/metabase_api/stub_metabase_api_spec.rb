@@ -86,4 +86,64 @@ RSpec.describe MetabaseApi::StubMetabaseApi do
       ])
     end
   end
+
+  context 'put_card' do
+    it 'returns a successful updated card response' do
+      given_an_api_with(cards: [
+        card(id: 1, name: 'Card')
+      ])
+
+      when_the_api { |a| a.put_card(put_card_request(id: 1, name: 'New Card')) }
+
+      then_the_result_matches_success_of(card(id: 1, name: 'New Card'))
+    end
+    it 'ensures updated cards can be retrieved' do
+      given_an_api_with(cards: [
+        card(id: 1, name: 'Card')
+      ])
+
+      when_the_api do |a|
+        a.put_card(put_card_request(id: 1, name: 'New Card'))
+        a.get_card(1)
+      end
+
+      then_the_result_matches_success_of(card(id: 1, name: 'New Card'))
+    end
+    it 'returns a successful new card response with generated id' do
+      given_an_api_with(cards: [])
+
+      when_the_api { |a| a.put_card(put_card_request(id: nil, name: 'Card'))}
+
+      then_the_result_matches_success_of(card(id: 1, name: 'Card'))
+    end
+  end
+
+  context 'put_pulse' do
+    it 'returns a successful updated pulse response' do
+      given_an_api_with(pulses: [
+        pulse(id: 1, name: 'Pulse')
+      ])
+
+      when_the_api { |a| a.put_pulse(put_pulse_request(id: 1, name: 'New Pulse')) }
+
+      then_the_result_matches_success_of(pulse(id: 1, name: 'New Pulse'))
+    end
+    it 'ensures updated pulses can be retrieved' do
+      given_an_api_with(pulses: [pulse(id: 1, name: 'Pulse')])
+
+      when_the_api do |a|
+        a.put_pulse(put_pulse_request(id: 1, name: 'New Pulse'))
+        a.get_pulse(1)
+      end
+
+      then_the_result_matches_success_of(pulse(id: 1, name: 'New Pulse'))
+    end
+    it 'returns a successful new card response with generated id' do
+      given_an_api_with(pulses: [])
+
+      when_the_api { |a| a.put_pulse(put_pulse_request(id: nil, name: 'Pulse'))}
+
+      then_the_result_matches_success_of(pulse(id: 1, name: 'Pulse'))
+    end
+  end
 end

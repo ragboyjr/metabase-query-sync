@@ -17,9 +17,7 @@ class MetabaseQuerySync::MetabaseApi
       end
 
       def self.build
-        channel_builder = ChannelBuilder.new
-        yield channel_builder
-        channel_builder.()
+        (yield ChannelBuilder.new).()
       end
 
       class ChannelBuilder
@@ -29,9 +27,10 @@ class MetabaseQuerySync::MetabaseApi
         end
 
         # @param hour [Integer] value between 0 and 23
-        def daily_schedule(hour)
+        def daily(hour)
           assert_hour hour
           @args = @args.merge({schedule_type: 'daily', schedule_day: nil, schedule_frame: nil, schedule_hour: hour})
+          self
         end
 
         def assert_hour(hour)
@@ -43,7 +42,7 @@ class MetabaseQuerySync::MetabaseApi
 
         # @param hour [Integer] value between 0 and 23
         # @param day [:sun, :mon, :tue, :wed, :thu, :fri, :sat]
-        def weekly_schedule(hour, day)
+        def weekly(hour, day)
           assert_hour hour
           assert_day day
           @args = @args.merge({
@@ -52,20 +51,24 @@ class MetabaseQuerySync::MetabaseApi
             schedule_frame: nil,
             schedule_hour: hour
           })
+          self
         end
 
-        def hourly_schedule
+        def hourly
           @args = @args.merge({schedule_type: 'hourly', schedule_day: nil, schedule_frame: nil, schedule_hour: nil})
+          self
         end
 
         # @param emails [Array<String>]
         def emails(emails)
           @args = @args.merge({channel_type: 'email', recipients: emails.map {|e| {email: e}} })
+          self
         end
 
         # @param channel [String]
         def slack(channel)
           @args = @args.merge({channel_type: 'slack', details: {channel: channel}})
+          self
         end
 
         def call()
@@ -84,5 +87,11 @@ class MetabaseQuerySync::MetabaseApi
     attribute :cards, MetabaseQuerySync::Types::Strict::Array.of(Pulse::Card)
     attribute :channels, MetabaseQuerySync::Types::Strict::Array.of(Pulse::Channel)
     attribute :skip_if_empty, MetabaseQuerySync::Types::Strict::Bool
+
+    # @param put_pulse_request [PutPulseRequest]
+    # @return self
+    def self.from_request(put_pulse_request)
+      new(put_pulse_request.to_h)
+    end
   end
 end

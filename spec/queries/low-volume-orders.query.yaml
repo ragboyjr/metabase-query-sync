@@ -1,4 +1,4 @@
-name: Low Volume Order
+name: Low Volume Orders
 sql: 'select * from orders'
 database: Local DB
 pulse: Hourly

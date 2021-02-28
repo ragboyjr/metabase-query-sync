@@ -8,7 +8,7 @@ RSpec.describe IR::Pulse do
         ]},
         pulse(name: "Pulse", alerts: [
           pulse_alert do |a|
-            a.email ["test@test.com"]
+            a.emails ["test@test.com"]
             a.hourly
           end
         ])

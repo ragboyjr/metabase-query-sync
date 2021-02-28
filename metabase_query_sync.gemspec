@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dry-monads", '~> 1.3'
   spec.add_dependency "faraday", "~> 1.0"
   spec.add_dependency "faraday_middleware", "~> 1.0"
+  spec.add_dependency "dry-cli", "~> 0.6"
 
   spec.required_ruby_version = "~> 2.7"
 
