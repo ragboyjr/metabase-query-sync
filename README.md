@@ -78,24 +78,41 @@ Then using the metabase-query-sync cli tool, you can sync those files directly i
 
 ```bash
 Command:
-  metabase-query-sync sync
+  metabase-query-sync s
 
 Usage:
-  metabase-query-sync sync ROOT_COLLECTION_ID PATHS
+  metabase-query-sync s ROOT_COLLECTION_ID [PATHS]
 
 Description:
   Sync queries/pulses to your metabase root collection
 
 Arguments:
   ROOT_COLLECTION_ID  	# REQUIRED The root collection id to sync all items under.
-  PATHS               	# REQUIRED The paths to metabase item files to sync from. Support for scoped paths with custom_name:/path/to/folder is supported as well to ensure each imported item is scoped with custom_name.
+  PATHS               	# The paths to metabase item files to sync from. Support for scoped paths with custom_name:/path/to/folder is supported as well to ensure each imported item is scoped with custom_name.
 
 Options:
   --[no-]dry-run, -d              	# Perform a dry run and do not actually sync to the metabase instance., default: false
   --host=VALUE, -H VALUE          	# Metabase Host, if not set, will read from env at METABASE_QUERY_SYNC_HOST
   --user=VALUE, -u VALUE          	# Metabase User, if not set, will read from env at METABASE_QUERY_SYNC_USER
   --pass=VALUE, -p VALUE          	# Metabase Password, if not set, will read from env at METABASE_QUERY_SYNC_PASS
+  --config-file=VALUE, -f VALUE   	# explicit path to .metabase-query-sync.erb.yaml file in case its not in the working directory
   --help, -h                      	# Print this help
+```
+
+### Using .metabase-query-sync.erb.yaml
+
+It's nice to configure the different paths to search for at once instead of configuring into the command each time, and for that, we support setting defalt config in a file named `.metabase-query-sync.yaml` which should be in the same working directory of the command executation.
+
+Here's an example file:
+
+```yaml
+credentials:
+  host: http://metabase:3000
+  user: ragboyjr@icloud.com
+  pass: <%= ENV["METABASE_PASS"] %>
+paths:
+  - 'sales:app/sales/queries'
+  - 'catalog:app/catalog/queries'
 ```
 
 ### Results in Metabase
