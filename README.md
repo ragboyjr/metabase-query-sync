@@ -119,9 +119,9 @@ paths:
 
 Navigating to metabase under the root collection provided, should show the synced queries and pulses!
 
-![All Synced Items](doc/img/readme-1-everything.png)
-![Card](doc/img/readme-1-card.png)
-![Pulse](doc/img/readme-1-pulse.png)
+![All Synced Items](docs/img/readme-1-everything.png)
+![Card](docs/img/readme-1-card.png)
+![Pulse](docs/img/readme-1-pulse.png)
 
 ## Development
 
