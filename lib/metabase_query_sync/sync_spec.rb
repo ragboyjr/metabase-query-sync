@@ -24,7 +24,7 @@ RSpec.describe MetabaseQuerySync::Sync do
   it 'adds cards and pulses that are not in metabase' do
     @api.given_an_api_with
     @ir.given_a_graph(
-      queries: [@ir.query(name: 'Test Query', pulse: 'Test Pulse', description: 'Query Test')],
+      queries: [@ir.query(name: 'Test Query', pulse: 'test-pulse', description: 'Query Test')],
       pulses: [
         @ir.pulse(name: 'Test Pulse', alerts: [
           @ir.pulse_alert { |a| a.hourly.emails ["test@gmail.com"] }
@@ -47,7 +47,7 @@ RSpec.describe MetabaseQuerySync::Sync do
       pulses: [@api.pulse(id: 1, name: 'Pulse 1', cards: [@api.pulse_card(id: 1)], collection_id: 1)]
     )
     @ir.given_a_graph(
-      queries: [@ir.query(name: 'Card 1', pulse: 'Pulse 1', sql: 'select 1')],
+      queries: [@ir.query(name: 'Card 1', pulse: 'pulse-1', sql: 'select 1')],
       pulses: [@ir.pulse(name: 'Pulse 1')]
     )
 
@@ -66,7 +66,7 @@ RSpec.describe MetabaseQuerySync::Sync do
     end
     def given_query_in_graph(attributes)
       @ir.given_a_graph(
-        queries: [@ir.query(**{name: 'Card 1', pulse: 'Pulse 1', sql: 'select 1'}.merge(attributes))],
+        queries: [@ir.query(**{name: 'Card 1', pulse: 'pulse-1', sql: 'select 1'}.merge(attributes))],
         pulses: [@ir.pulse(name: 'Pulse 1')]
       )
     end
@@ -104,7 +104,7 @@ RSpec.describe MetabaseQuerySync::Sync do
         pulses: [@api.pulse(id: 1, name: 'Pulse 1', cards: [@api.pulse_card(id: 1)], channels: [@api.pulse_channel { |c| c.hourly.slack '#test' }], collection_id: 1)],
       )
       @ir.given_a_graph(
-        queries: [@ir.query(name: 'Card 1', pulse: 'Pulse 1', sql: 'select 1')],
+        queries: [@ir.query(name: 'Card 1', pulse: 'pulse-1', sql: 'select 1')],
         pulses: [@ir.pulse(name: 'Pulse 1', alerts: [@ir.pulse_alert { |a| a.hourly.slack '#test-new' }])]
       )
       when_a_sync_occurs
@@ -122,8 +122,8 @@ RSpec.describe MetabaseQuerySync::Sync do
       )
       @ir.given_a_graph(
         queries: [
-          @ir.query(name: 'Card 1', pulse: 'Pulse 1', sql: 'select 1'),
-          @ir.query(name: 'Card 2', pulse: 'Pulse 1', sql: 'select 1'),
+          @ir.query(name: 'Card 1', pulse: 'pulse-1', sql: 'select 1'),
+          @ir.query(name: 'Card 2', pulse: 'pulse-1', sql: 'select 1'),
         ],
         pulses: [@ir.pulse(name: 'Pulse 1', alerts: [@ir.pulse_alert { |a| a.hourly.slack '#test' }])]
       )

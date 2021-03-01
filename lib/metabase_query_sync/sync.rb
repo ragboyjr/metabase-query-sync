@@ -96,7 +96,7 @@ module MetabaseQuerySync
         .map do |pulse|
           api_pulse = metabase_state.pulse_by_name(pulse.name)
           pulse_cards = graph
-            .queries_by_pulse(pulse.name)
+            .queries_by_pulse(pulse.id)
             .flat_map do |query|
               card = metabase_state.card_by_name(query.name)
               card ? [card] : []
@@ -161,6 +161,40 @@ module MetabaseQuerySync
           @logger.error "Unhandled Request Type: #{req.class}"
           metabase_state
         end
+      end
+    end
+
+    # @param graph [IR::Graph]
+    # @param id [String]
+    def find_graph_query(graph, id)
+
+    end
+
+    # @param graph [IR::Graph]
+    # @param id [String]
+    def find_graph_pulse(graph, id)
+
+    end
+
+    # @param metabase_state [MetabaseState]
+    # @param id [String]
+    def find_api_card(metabase_state, id)
+
+    end
+
+    # @param metabase_state [MetabaseState]
+    # @param id [String]
+    def find_api_pulse(metabase_state, id)
+
+    end
+
+    # gets the normalized id from the given object to be used for comparisons
+    def id(object)
+      case object
+      when IR::Model
+        object.id
+      when MetabaseApi::Model
+        object.name[/^([^:]+):/, 1] # metabase api names are constructed with #{IR id}:#{IR name}
       end
     end
   end

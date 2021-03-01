@@ -19,8 +19,9 @@ class MetabaseQuerySync::ReadIR
 
     private
 
+    # @param file_path [String]
     def id_from_file(file_path)
-      File::basename(file_path).gsub(/\.(query|pulse)\.yaml$/, '')
+      file_path.gsub(/^#{Regexp.quote(File.join(@path, ''))}(.+)\.(query|pulse)\.yaml$/, '\1')
     end
   end
 end

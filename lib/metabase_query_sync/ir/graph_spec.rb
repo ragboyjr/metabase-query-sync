@@ -55,18 +55,18 @@ RSpec.describe IR::Graph do
 
       it 'creates a graph otherwise' do
         res = described_class.from_items([
-          query(name: 'Query 1', pulse: 'Pulse 1'),
+          query(name: 'Query 1', pulse: 'pulse-1'),
           pulse(name: 'Pulse 1'),
           pulse(name: 'Pulse 2'),
-          query(name: 'Query 2', pulse: 'Pulse 2'),
+          query(name: 'Query 2', pulse: 'pulse-2'),
         ])
 
         expect(res).to eq(IR::Graph.new(collections: [], pulses: [
           pulse(name: 'Pulse 1'),
           pulse(name: 'Pulse 2'),
         ], queries: [
-          query(name: 'Query 1', pulse: 'Pulse 1'),
-          query(name: 'Query 2', pulse: 'Pulse 2'),
+          query(name: 'Query 1', pulse: 'pulse-1'),
+          query(name: 'Query 2', pulse: 'pulse-2'),
         ]))
       end
     end
