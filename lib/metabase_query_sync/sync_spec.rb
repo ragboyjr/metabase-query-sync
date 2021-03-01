@@ -24,7 +24,7 @@ RSpec.describe MetabaseQuerySync::Sync do
   it 'adds cards and pulses that are not in metabase' do
     @api.given_an_api_with
     @ir.given_a_graph(
-      queries: [@ir.query(name: 'Test Query', pulse: 'Test Pulse')],
+      queries: [@ir.query(name: 'Test Query', pulse: 'Test Pulse', description: 'Query Test')],
       pulses: [
         @ir.pulse(name: 'Test Pulse', alerts: [
           @ir.pulse_alert { |a| a.hourly.emails ["test@gmail.com"] }
@@ -35,7 +35,7 @@ RSpec.describe MetabaseQuerySync::Sync do
     when_a_sync_occurs
 
     @api.then_the_api_received([
-      @api.put_card_request(name: 'Test Query', collection_id: 1),
+      @api.put_card_request(name: 'Test Query', collection_id: 1, description: 'Query Test'),
       @api.put_pulse_request(name: 'Test Pulse', channels: [
         @api.pulse_channel { |c| c.hourly.emails(["test@gmail.com"])}
       ], cards: [@api.pulse_card(id: 1)], collection_id: 1)

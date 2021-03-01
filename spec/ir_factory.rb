@@ -3,8 +3,8 @@ module IRFactory
     IR::Graph.new(collections: collections, pulses: pulses, queries: queries)
   end
 
-  def query(name:, description: nil, slug: nil, database:'Local', pulse: 'Test Pulse', collection: nil, sql: 'select * from orders')
-    IR::Query.new(name: name, description: description, slug: slug || name.downcase, database: database, pulse: pulse, collection: collection, sql: sql)
+  def query(id: nil, name:, description: nil, slug: nil, database:'Local', pulse: 'Test Pulse', collection: nil, sql: 'select * from orders')
+    IR::Query.new(id: id || name.downcase.gsub(' ', '-'), name: name, description: description, slug: slug || name.downcase, database: database, pulse: pulse, collection: collection, sql: sql)
   end
 
   def pulse(name:, alerts: nil)
