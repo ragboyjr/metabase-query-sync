@@ -14,38 +14,6 @@ RSpec.describe IR::Graph do
       expect(@result).to eql(result)
     end
 
-    context 'finding queries by name' do
-      before do
-        given_a_graph(queries: [query(name: 'All Orders')])
-      end
-
-      it 'returns query on soft name match' do
-        when_the_graph { |graph| graph.query_by_name('all orders') }
-        then_the_result_matches(query(name: 'All Orders'))
-      end
-
-      it 'returns nil if no match' do
-        when_the_graph { |graph| graph.query_by_name('unknown name') }
-        then_the_result_matches(nil)
-      end
-    end
-
-    context "finding pulses by name" do
-      before do
-        given_a_graph(pulses: [pulse(name: 'Hourly')])
-      end
-
-      it 'returns query on soft name match' do
-        when_the_graph { |graph| graph.pulse_by_name('hourly') }
-        then_the_result_matches(pulse(name: 'Hourly'))
-      end
-
-      it 'returns nil if no match' do
-        when_the_graph { |graph| graph.pulse_by_name('unknown name') }
-        then_the_result_matches(nil)
-      end
-    end
-
     context 'creating from a collection of items' do
       it 'throws if invalid item is provided' do
         expect {

@@ -36,16 +36,6 @@ module MetabaseQuerySync::IR
       end)
     end
 
-    # @return [Query, nil]
-    def query_by_name(name)
-      queries.filter { |query| strcmp(query.name, name) }.first
-    end
-
-    # @return [Pulse, nil]
-    def pulse_by_name(name)
-      pulses.filter { |pulse| strcmp(pulse.name, name) }.first
-    end
-
     # @return [Array<Query>]
     def queries_by_pulse(pulse_id)
       queries.filter { |query| query.pulse == pulse_id }

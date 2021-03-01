@@ -39,8 +39,5 @@ RSpec.describe MetabaseQuerySync::MetabaseState do
       when_the_state_is_created(1)
       then_the_state_matches(cards: [card(id: 1, collection_id: 1)], pulses: [pulse(id: 1, collection_id: 1)])
     end
-    xit 'recursively retrieves items from collections' do
-
-    end
   end
 end

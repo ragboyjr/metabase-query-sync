@@ -65,16 +65,6 @@ module MetabaseQuerySync
       collections.empty? && cards.empty? && pulses.empty?
     end
 
-    # @return [MetabaseApi::Pulse, nil]
-    def pulse_by_name(name)
-      pulses.filter { |p| p.name.downcase == name.downcase }.first
-    end
-
-    # @return [MetabaseApi::Card, nil]
-    def card_by_name(name)
-      cards.filter { |c| c.name.downcase == name.downcase }.first
-    end
-
     def database_by_name(name)
       databases.filter { |d| d.name.downcase == name.downcase }.first
     end
