@@ -36,27 +36,17 @@ module MetabaseQuerySync::IR
       end)
     end
 
-    # @return [Query, nil]
-    def query_by_name(name)
-      queries.filter { |query| strcmp(query.name, name) }.first
-    end
-
-    # @return [Pulse, nil]
-    def pulse_by_name(name)
-      pulses.filter { |pulse| strcmp(pulse.name, name) }.first
-    end
-
     # @return [Array<Query>]
-    def queries_by_pulse(pulse_name)
-      queries.filter { |query| strcmp(query.pulse, pulse_name) }
+    def queries_by_pulse(pulse_id)
+      queries.filter { |query| query.pulse == pulse_id }
     end
 
     private
 
     def assert_traversal
-      pulse_names = pulses.map(&:name).map(&:downcase).to_set
+      pulse_ids = pulses.map(&:id).to_set
       queries.each do |q|
-        raise "No pulse (#{q.pulse}) found for query (#{q.name})" unless pulse_names === q.pulse.downcase
+        raise "No pulse (#{q.pulse}) found for query (#{q.name})" unless pulse_ids === q.pulse
       end
     end
 

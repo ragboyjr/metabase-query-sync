@@ -1,7 +1,0 @@
----
-name: Hourly
-alerts:
-  - type: slack
-    slack: { channel: '#alerts' }
-    schedule:
-      type: hourly

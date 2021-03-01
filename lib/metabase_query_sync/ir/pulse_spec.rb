@@ -3,10 +3,10 @@ RSpec.describe IR::Pulse do
   context 'create and validate' do
     [
       [
-        {name: "Pulse", alerts: [
+        {id: "pulse", name: "Pulse", alerts: [
           {type: "email", schedule: {type: 'hourly'}, email: {emails: ["test@test.com"]}}
         ]},
-        pulse(name: "Pulse", alerts: [
+        pulse(id: "pulse", name: "Pulse", alerts: [
           pulse_alert do |a|
             a.emails ["test@test.com"]
             a.hourly
@@ -14,8 +14,8 @@ RSpec.describe IR::Pulse do
         ])
       ],
       [
-        {"name"=>"Hourly", "alerts"=>[{"type"=>"slack", "slack"=>{"channel"=>"#alerts"}, "schedule"=>{"type"=>"hourly"}}]},
-        pulse(name: "Hourly", alerts: [
+        {"id" => "hourly", "name" =>"Hourly", "alerts"=>[{"type"=>"slack", "slack"=>{"channel"=>"#alerts"}, "schedule"=>{"type"=>"hourly"}}]},
+        pulse(id: "hourly", name: "Hourly", alerts: [
           pulse_alert do |a|
             a.slack '#alerts'
             a.hourly

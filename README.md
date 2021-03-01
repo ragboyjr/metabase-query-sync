@@ -31,7 +31,7 @@ Build files with `.query.yaml` or `.pulse.yaml` suffix and sync those files up t
 name: Low Volume Orders
 sql: 'select * from orders'
 database: Local DB # must match name of database in metabase
-pulse: Hourly # must match local pulse name field, throws exception if no pulse is found with that name
+pulse: hourly # must match local pulse id (name of file), throws exception if no pulse is found with that name
 ```
 
 ```yaml
@@ -48,6 +48,28 @@ alerts:
       type: hourly # can be one of hourly, daily, weekly
       hour: 5 # number from 0-23, only needed if daily or weekly
       day: mon # first 3 character of day only needed if weekly
+```
+
+### Understanding Ids
+
+Every metabase model defined in a file has an id which defaults to the name of the file minus the query/pulse.yaml suffix. An id can be explicitly set in the file if wanted. All references within files to other files must use the id of the item to reference.
+
+Given the following folder layout:
+
+```
+queries/
+  low-volume.query.yaml
+  catalog/
+    products-missing-images.query.yaml
+  hourly.pulse.yaml
+```
+
+The generated ids would be:
+
+```
+low-volume
+catalog/products-missing-images
+hourly
 ```
 
 ### Running the Sync
@@ -76,21 +98,31 @@ Options:
   --help, -h                      	# Print this help
 ```
 
+### Results in Metabase
+
+Navigating to metabase under the root collection provided, should show the synced queries and pulses!
+
+![All Synced Items](doc/img/readme-1-everything.png)
+![Card](doc/img/readme-1-card.png)
+![Pulse](doc/img/readme-1-pulse.png)
+
 ## Development
 
 - Install gems with `bundle install`
 - Run tests with `bundle exec rspec`
 
-### TODO
 
-- Support Collections and Syncing with collections
-- Matching IR vs MetabaseApi items should go off of the file name + collection id instead of just the name
-
-## Debugging with Metabase
+### Debugging with Metabase
 
 To setup the local data source for metabase, run `make db`.
 
 Starting the metabase docker container should automatically initialize an empty metabase installation with the main admin user account (ragboyjr@icloud.com / password123).
+
+## Roadmap
+
+- Support syncing from multiple paths with id prefixes
+  - e.g. /path-to-sales-queries:sales /path-to-payment-queries:payment
+- Support `.metabase-query-sync.erb.yaml` configuration file
 
 ## Contributing
 

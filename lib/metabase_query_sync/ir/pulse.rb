@@ -22,11 +22,13 @@ module MetabaseQuerySync::IR
       attribute :schedule, Schedule
     end
 
+    attribute :id, string
     attribute :name, string
     attribute :skip_if_empty, bool.default(true)
     attribute :alerts, array.of(Alert)
 
     validate_with_schema do
+      required(:id).filled(:string)
       required(:name).filled(:string)
       optional(:skip_if_empty).value(:bool)
       required(:alerts).value(:array, min_size?: 1).each do

@@ -1,14 +1,14 @@
 module IRFactory
-  def graph(collections: [], pulses: [pulse(name: 'Test Pulse')], queries: [])
+  def graph(collections: [], pulses: [pulse(id: 'test-pulse', name: 'Test Pulse')], queries: [])
     IR::Graph.new(collections: collections, pulses: pulses, queries: queries)
   end
 
-  def query(name:, description: nil, slug: nil, database:'Local', pulse: 'Test Pulse', collection: nil, sql: 'select * from orders')
-    IR::Query.new(name: name, description: description, slug: slug || name.downcase, database: database, pulse: pulse, collection: collection, sql: sql)
+  def query(id: nil, name:, description: nil, slug: nil, database:'Local', pulse: 'test-pulse', collection: nil, sql: 'select * from orders')
+    IR::Query.new(id: id || name.downcase.gsub(' ', '-'), name: name, description: description, slug: slug || name.downcase, database: database, pulse: pulse, collection: collection, sql: sql)
   end
 
-  def pulse(name:, alerts: nil)
-    IR::Pulse.new(name: name, alerts: alerts || [
+  def pulse(id: nil, name:, alerts: nil)
+    IR::Pulse.new(id: id || name.downcase.gsub(' ', '-'), name: name, alerts: alerts || [
       pulse_alert do |a|
         a.emails ['ragboyjr@icloud.com']
         a.hourly
