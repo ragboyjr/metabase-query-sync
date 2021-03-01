@@ -1,12 +1,12 @@
 module MetabaseQuerySync
   class Config
-    attr_reader :credentials, :path
+    attr_reader :credentials, :paths
 
     # @param credentials [MetabaseQuerySync::MetabaseCredentials]
-    # @param path [String]
-    def initialize(credentials:, path:)
+    # @param paths [Array<String>]
+    def initialize(credentials:, paths:)
       @credentials = credentials
-      @path = path
+      @paths = paths
     end
   end
 end

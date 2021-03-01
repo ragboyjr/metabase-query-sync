@@ -81,14 +81,14 @@ Command:
   metabase-query-sync sync
 
 Usage:
-  metabase-query-sync sync ROOT_COLLECTION_ID PATH
+  metabase-query-sync sync ROOT_COLLECTION_ID PATHS
 
 Description:
   Sync queries/pulses to your metabase root collection
 
 Arguments:
   ROOT_COLLECTION_ID  	# REQUIRED The root collection id to sync all items under.
-  PATH                	# REQUIRED The path to metabase item files to sync from.
+  PATHS               	# REQUIRED The paths to metabase item files to sync from. Support for scoped paths with custom_name:/path/to/folder is supported as well to ensure each imported item is scoped with custom_name.
 
 Options:
   --[no-]dry-run, -d              	# Perform a dry run and do not actually sync to the metabase instance., default: false

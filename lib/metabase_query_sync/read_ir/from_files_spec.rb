@@ -21,16 +21,21 @@ RSpec.describe MetabaseQuerySync::ReadIR::FromFiles do
     end
   end
 
-  def when_the_ir_is_read
-    @graph = described_class.new(__dir__ + '/__spec__').()
+  def query_path(scope: nil, path: nil)
+    path = path || __dir__ + '/__spec__'
+    scope ? "#{scope}:#{path}" : path
+  end
+
+  def when_the_ir_is_read(_query_path = nil)
+    @graph = described_class.new(_query_path || query_path).()
   end
 
   def then_the_imported_graph_matches(graph)
     expect(@graph).to eq(graph)
   end
 
-  def given_an_hourly_pulse()
-    given_a_file_with_contents 'hourly.pulse.yaml', <<-'YAML'
+  def given_an_hourly_pulse(name: 'hourly.pulse.yaml')
+    given_a_file_with_contents name, <<-'YAML'
 ---
 name: Hourly
 alerts:
@@ -41,13 +46,13 @@ alerts:
 YAML
   end
 
-  def hourly_pulse
+  def hourly_pulse(**attributes)
     pulse(name: 'Hourly', alerts: [
       pulse_alert do |a|
         a.slack '#alerts'
         a.hourly
       end
-    ])
+    ], **attributes)
   end
 
   it 'can read from files' do
@@ -108,6 +113,30 @@ YAML
       queries: [
         query(id: 'sales/test', name: 'Test', database: 'Local', pulse: 'hourly', sql: "select 1")
       ]
+    ))
+  end
+
+  it 'can sync from multiple paths' do
+    given_an_hourly_pulse(name: 'sales/hourly.pulse.yaml')
+    given_an_hourly_pulse(name: 'catalog/hourly.pulse.yaml')
+    when_the_ir_is_read([
+      query_path(scope: 'sales', path: __dir__ + '/__spec__/sales'),
+      query_path(scope: 'catalog', path: __dir__ + '/__spec__/catalog'),
+    ])
+    then_the_imported_graph_matches(IR::Graph.new(
+      collections: [],
+      pulses: [hourly_pulse(id: 'sales/hourly'), hourly_pulse(id: 'catalog/hourly')],
+      queries: []
+    ))
+  end
+
+  it 'supports scoped paths' do
+    given_an_hourly_pulse
+    when_the_ir_is_read(query_path(scope: 'sales'))
+    then_the_imported_graph_matches(IR::Graph.new(
+      collections: [],
+      pulses: [hourly_pulse(id: 'sales/hourly')],
+      queries: [],
     ))
   end
 end
