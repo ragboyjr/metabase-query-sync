@@ -18,10 +18,6 @@ RSpec.describe MetabaseQuerySync::MetabaseCredentials do
     then_the_credentials_match 'host', 'user', 'pass'
   end
 
-  def given_the_following_env_is_set(env)
-    ENV.update(env)
-  end
-
   def when_the_credentials_are_created
     # @type [MetabaseQuerySync::MetabaseCredentials]
     @credentials = yield

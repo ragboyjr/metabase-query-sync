@@ -12,7 +12,7 @@ module MetabaseQuerySync
 
     # @param config [Config]
     def self.from_config(config, logger = nil)
-      new(ReadIR::FromFiles.new(config.paths), MetabaseApi::FaradayMetabaseApi.from_metabase_credentials(config.credentials), logger)
+      new(ReadIR::FromFiles.new(config.paths, logger), MetabaseApi::FaradayMetabaseApi.from_metabase_credentials(config.credentials), logger)
     end
 
     # @param sync_req [SyncRequest]

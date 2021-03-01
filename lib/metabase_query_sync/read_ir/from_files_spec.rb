@@ -4,25 +4,12 @@ RSpec.describe MetabaseQuerySync::ReadIR::FromFiles do
   include IRFactory
 
   before do
-    Dir[__dir__ + '/__spec__/*']
-      .filter { |f| File.basename(f) != '.gitignore' }
-      .each { |f| FileUtils.rm_rf(f) }
-  end
-
-  # @param contents [String]
-  def given_a_file_with_contents(name, contents)
-    file_path = __dir__ + '/__spec__/' + name
-    dir = File.dirname(file_path)
-    unless File.directory?(dir)
-      FileUtils.mkdir_p(dir)
-    end
-    File.open(__dir__ + '/__spec__/' + name, 'w') do |f|
-      f.write(contents)
-    end
+    @file_fixtures = FileFixtures.new
+    @file_fixtures.clear_files
   end
 
   def query_path(scope: nil, path: nil)
-    path = path || __dir__ + '/__spec__'
+    path = path || @file_fixtures.fixtures_path
     scope ? "#{scope}:#{path}" : path
   end
 
@@ -35,7 +22,7 @@ RSpec.describe MetabaseQuerySync::ReadIR::FromFiles do
   end
 
   def given_an_hourly_pulse(name: 'hourly.pulse.yaml')
-    given_a_file_with_contents name, <<-'YAML'
+    @file_fixtures.given_a_file_with_contents name, <<-'YAML'
 ---
 name: Hourly
 alerts:
@@ -56,7 +43,7 @@ YAML
   end
 
   it 'can read from files' do
-    given_a_file_with_contents 'low-volume-orders.query.yaml', <<-'YAML'
+    @file_fixtures.given_a_file_with_contents 'low-volume-orders.query.yaml', <<-'YAML'
 --- 
 name: Low Volume Orders In Last 4 Hours
 database: Local
@@ -77,7 +64,7 @@ YAML
   end
 
   it 'allows ids to be set explicitly' do
-    given_a_file_with_contents 'not-used.query.yaml', <<-'YAML'
+    @file_fixtures.given_a_file_with_contents 'not-used.query.yaml', <<-'YAML'
 --- 
 id: test-id
 name: Test
@@ -98,7 +85,7 @@ YAML
   end
 
   it 'allows subfolders' do
-    given_a_file_with_contents 'sales/test.query.yaml', <<-'YAML'
+    @file_fixtures.given_a_file_with_contents 'sales/test.query.yaml', <<-'YAML'
 --- 
 name: Test
 database: Local
@@ -120,8 +107,8 @@ YAML
     given_an_hourly_pulse(name: 'sales/hourly.pulse.yaml')
     given_an_hourly_pulse(name: 'catalog/hourly.pulse.yaml')
     when_the_ir_is_read([
-      query_path(scope: 'sales', path: __dir__ + '/__spec__/sales'),
-      query_path(scope: 'catalog', path: __dir__ + '/__spec__/catalog'),
+      query_path(scope: 'sales', path: File.join(@file_fixtures.fixtures_path, 'sales')),
+      query_path(scope: 'catalog', path: File.join(@file_fixtures.fixtures_path, 'catalog')),
     ])
     then_the_imported_graph_matches(IR::Graph.new(
       collections: [],

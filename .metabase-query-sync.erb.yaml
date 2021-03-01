@@ -1,0 +1,6 @@
+credentials:
+  host: http://metabase:3000
+  user: ragboyjr@icloud.com
+  pass: <%= ENV["METABASE_PASS"] %>
+paths:
+  - 'test:spec/queries'

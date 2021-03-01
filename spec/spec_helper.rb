@@ -1,6 +1,7 @@
 require "bundler/setup"
 require "metabase_query_sync"
 require 'simplecov'
+require_relative 'file_fixtures'
 require_relative 'ir_factory'
 require_relative 'ir_steps'
 require_relative 'metabase_api_factory'
@@ -28,3 +29,7 @@ end
 
 MetabaseApi = MetabaseQuerySync::MetabaseApi
 IR = MetabaseQuerySync::IR
+
+def given_the_following_env_is_set(env)
+  ENV.update(env)
+end
