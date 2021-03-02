@@ -128,18 +128,11 @@ Navigating to metabase under the root collection provided, should show the synce
 - Install gems with `bundle install`
 - Run tests with `bundle exec rspec`
 
-
 ### Debugging with Metabase
 
 To setup the local data source for metabase, run `make db`.
 
 Starting the metabase docker container should automatically initialize an empty metabase installation with the main admin user account (ragboyjr@icloud.com / password123).
-
-## Roadmap
-
-- Support syncing from multiple paths with id prefixes
-  - e.g. /path-to-sales-queries:sales /path-to-payment-queries:payment
-- Support `.metabase-query-sync.erb.yaml` configuration file
 
 ## Contributing
 
@@ -152,3 +145,9 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Code of Conduct
 
 Everyone interacting in the Metabase::Query::Sync project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/ragboyjr/metabase-query-sync/blob/master/CODE_OF_CONDUCT.md).
+
+## Releasing
+
+- Ensure your credentials are setup with ruby gems in `~/.gem/credentials`
+- Update lib/metabase_query_sync/version.rb accordingly
+- Run `make push-gem` to build and push the gem

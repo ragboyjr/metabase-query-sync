@@ -13,5 +13,5 @@ push-gem: build
 clean-build:
 	rm release.gem
 
-release.gem: metabase_query_sync.gemspec
+release.gem: metabase_query_sync.gemspec lib/metabase_query_sync/version.rb
 	gem build metabase_query_sync.gemspec --output=release.gem
