@@ -1,5 +1,5 @@
 class MetabaseQuerySync::MetabaseApi
-  class PutCardRequest < Model
+  class PutCardRequest < ApiRequest
     has :id, :archived, :name, :description, :collection_id
     attribute :display, MetabaseQuerySync::Types::Strict::String.default('table'.freeze)
     attribute :visualization_settings, MetabaseQuerySync::Types::Strict::Hash.default({}.freeze)

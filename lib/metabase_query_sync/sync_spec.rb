@@ -105,6 +105,10 @@ RSpec.describe MetabaseQuerySync::Sync do
     end
   end
 
+  context 'it updates cards with alerts when' do
+
+  end
+
   context 'it updates pulses when' do
     def given_pulse_in_api(**attributes)
       @api.given_an_api_with(

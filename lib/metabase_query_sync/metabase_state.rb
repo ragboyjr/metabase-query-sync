@@ -16,6 +16,10 @@ module MetabaseQuerySync
     attribute :pulses, Types::Strict::Array.of(MetabaseApi::Pulse)
     attribute :databases, Types::Strict::Array.of(MetabaseApi::Database)
 
+    def self.empty
+      new(collections: [], cards: [], pulses: [], databases: [])
+    end
+
     # @param metabase_api [MetabaseApi]
     # @param root_collection_id [Integer]
     # @return [MetabaseState]
