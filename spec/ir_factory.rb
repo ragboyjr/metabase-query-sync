@@ -3,8 +3,8 @@ module IRFactory
     IR::Graph.new(collections: collections, pulses: pulses, queries: queries)
   end
 
-  def query(id: nil, name:, description: nil, slug: nil, database:'Local', pulse: 'test-pulse', collection: nil, sql: 'select * from orders')
-    IR::Query.new(id: id || name.downcase.gsub(' ', '-'), name: name, description: description, slug: slug || name.downcase, database: database, pulse: pulse, collection: collection, sql: sql)
+  def query(id: nil, name:, description: nil, slug: nil, database:'Local', pulse: 'test-pulse', alert: nil, collection: nil, sql: 'select * from orders')
+    IR::Query.new(id: id || name.downcase.gsub(' ', '-'), name: name, description: description, slug: slug || name.downcase, database: database, pulse: pulse, collection: collection, alert: alert, sql: sql)
   end
 
   def pulse(id: nil, name:, alerts: nil)
@@ -41,7 +41,7 @@ module IRFactory
     end
 
     def call
-      IR::Pulse::Alert.new(@args)
+      IR::Pulse::AlertChannel.new(@args)
     end
   end
 end

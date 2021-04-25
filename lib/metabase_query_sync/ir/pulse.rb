@@ -1,6 +1,6 @@
 module MetabaseQuerySync::IR
   class Pulse < Model
-    class Alert < Model
+    class AlertChannel < Model
       TYPES = ['email', 'slack'].freeze
       class Email < Model
         attribute :emails, array.of(string)
@@ -25,7 +25,7 @@ module MetabaseQuerySync::IR
     attribute :id, string
     attribute :name, string
     attribute :skip_if_empty, bool.default(true)
-    attribute :alerts, array.of(Alert)
+    attribute :alerts, array.of(AlertChannel)
 
     validate_with_schema do
       required(:id).filled(:string)
@@ -33,11 +33,11 @@ module MetabaseQuerySync::IR
       optional(:skip_if_empty).value(:bool)
       required(:alerts).value(:array, min_size?: 1).each do
         hash do
-          required(:type).value(:filled?, :str?, included_in?: Alert::TYPES)
+          required(:type).value(:filled?, :str?, included_in?: AlertChannel::TYPES)
           required(:schedule).hash do
-            required(:type).value(:filled?, :str?, included_in?: Alert::Schedule::TYPES)
+            required(:type).value(:filled?, :str?, included_in?: AlertChannel::Schedule::TYPES)
             optional(:hour).value(:integer)
-            optional(:day).value(included_in?: Alert::Schedule::DAYS)
+            optional(:day).value(included_in?: AlertChannel::Schedule::DAYS)
           end
           optional(:email).hash do
             required(:emails).value(array[:string], min_size?: 1)
